@@ -1,0 +1,532 @@
+to kretanje_osoba
+  
+  let br 2
+  let brr (2 + brz1)
+;  while[br != (brz1 + 2)]
+;  [
+;    set naprijed 0
+;    set lijevo 0
+;    set desno 0
+;    set nazad 0
+;    ask zenska_osoba br
+;    [
+;      ifelse [pcolor] of patch-ahead 1 != grey
+;      [
+;        set naprijed 1 
+;        if [pcolor] of patch-ahead 2 != grey 
+;        [
+;          set naprijed 2
+;        ]
+;      ]
+;      [
+;        set naprijed 0
+;      ]
+;      ifelse [pcolor] of patch-left-and-ahead 90 1 != grey
+;      [
+;        set lijevo 1 
+;        if [pcolor] of patch-left-and-ahead 90 2 != grey 
+;        [
+;          set lijevo 2
+;        ]
+;      ]
+;      [
+;        set lijevo 0
+;      ]
+;      ifelse [pcolor] of patch-right-and-ahead 90 1 != grey
+;      [
+;        set desno 1 
+;        if [pcolor] of patch-right-and-ahead 90 2 != grey 
+;        [
+;          set desno 2
+;        ]
+;      ]
+;      [
+;        set desno 0
+;      ]
+;      ifelse [pcolor] of patch-ahead -1 != grey
+;      [
+;        set nazad 1 
+;        if [pcolor] of patch-ahead -2 != grey 
+;        [
+;          set nazad 2
+;        ]
+;      ]
+;      [
+;        set nazad 0
+;      ]
+;      ifelse naprijed > desno and naprijed > lijevo and naprijed > nazad
+;      [
+;        fd 1
+;      ]
+;      [
+;        ifelse lijevo > desno and lijevo > naprijed and lijevo > nazad
+;        [
+;          left 90
+;           fd 1
+;        ]
+;        [
+;          ifelse desno > lijevo and desno > naprijed and desno > nazad
+;          [
+;            right 90
+;            fd 1
+;          ]
+;          [
+;            ifelse nazad > lijevo and nazad > naprijed and nazad > desno
+;            [
+;              bk 1
+;            ]
+;            [
+;              ifelse desno = lijevo and lijevo = naprijed and naprijed = nazad
+;              [
+;                let r random 4 
+;                ifelse r = 0 
+;                [
+;                  fd 1
+;                ]
+;                [
+;                  ifelse r = 1 
+;                  [
+;                    left 90
+;                    fd 1
+;                  ]
+;                  [
+;                    ifelse r = 2
+;                    [
+;                      right 90
+;                      fd 1
+;                    ]
+;                    [
+;                      bk 1
+;                    ]
+;                  ]
+;                ]
+;              ]
+;              [
+;                ifelse desno = lijevo and nazad = naprijed
+;                [
+;                  let r random 2
+;                  ifelse desno > nazad
+;                  [
+;                    ifelse r = 0 
+;                    [
+;                      right 90
+;                      fd 1
+;                    ] 
+;                    [
+;                      left 90
+;                      fd 1
+;                    ]
+;                  ]
+;                  [
+;                    ifelse r = 0 
+;                    [
+;                      fd 1
+;                    ] 
+;                    [
+;                      bk 1
+;                    ]
+;                  ]
+;                ]
+;                [
+;                  ifelse desno = naprijed and lijevo = nazad 
+;                  [
+;                    let r random 2
+;                    ifelse desno > nazad
+;                    [
+;                      ifelse r = 0 
+;                      [
+;                        right 90
+;                        fd 1
+;                      ] 
+;                      [
+;                        fd 1
+;                      ]
+;                    ]
+;                    [
+;                      ifelse r = 0 
+;                      [
+;                        left 90
+;                        fd 1
+;                      ] 
+;                      [
+;                        bk 1
+;                      ]
+;                    ]
+;                  ]
+;                  [
+;                    ifelse desno = nazad and lijevo = naprijed
+;                    [
+;                      let r random 2
+;                      ifelse desno > naprijed
+;                      [
+;                        ifelse r = 0 
+;                        [
+;                          right 90
+;                          fd 1
+;                        ] 
+;                        [
+;                          bk 1
+;                        ]
+;                      ]
+;                      [
+;                        ifelse r = 0 
+;                        [
+;                          left 90
+;                          fd 1
+;                        ] 
+;                        [
+;                          fd 1
+;                        ]
+;                      ]
+;                    ]
+;                    [
+;                      let r random 2
+;                      ifelse naprijed = lijevo 
+;                      [
+;                        ifelse r = 0 
+;                        [
+;                          fd 1
+;                        ] 
+;                        [
+;                          left 90
+;                          fd 1
+;                        ]
+;                      ]
+;                      [
+;                        ifelse naprijed = desno 
+;                        [
+;                          ifelse r = 0 
+;                          [
+;                            fd 1
+;                          ] 
+;                          [ 
+;                            right 90
+;                            fd 1
+;                          ]
+;                        ]
+;                        [
+;                          ifelse naprijed = nazad 
+;                          [
+;                            ifelse r = 0 
+;                            [
+;                              fd 1
+;                            ] 
+;                            [ 
+;                              bk 1
+;                            ]
+;                          ]
+;                          [
+;                            ifelse desno = lijevo 
+;                            [
+;                              ifelse r = 0 
+;                              [
+;                                right 90
+;                                fd 1
+;                              ] 
+;                              [
+;                                left 90
+;                                fd 1
+;                              ]
+;                            ]
+;                            [
+;                              ifelse desno = nazad 
+;                              [
+;                                ifelse r = 0 
+;                                [
+;                                  right 90
+;                                  fd 1
+;                                ] 
+;                                [
+;                                  bk 1
+;                                ]
+;                              ]
+;                              [
+;                                ifelse r = 0 
+;                                [
+;                                  left 90
+;                                  fd 1
+;                                ] 
+;                                [
+;                                  bk 1
+;                                ]
+;                              ]
+;                            ]
+;                          ]
+;                        ]
+;                      ]
+;                    ]
+;                  ]
+;                ]
+;              ]
+;            ]
+;          ]
+;        ]
+;      ]
+;    ]
+;  set br (br + 1)
+;  ]
+  while[brr != (brz1 + brm1 + 2)]
+  [
+    set naprijed 0
+    set lijevo 0
+    set desno 0
+    set nazad 0
+    ask muska_osoba brr
+    [
+      ifelse [pcolor] of patch-ahead 1 != grey
+      [
+        set naprijed 1 
+        if [pcolor] of patch-ahead 2 != grey 
+        [
+          set naprijed 2
+        ]
+      ]
+      [
+        set naprijed 0
+      ]
+      ifelse [pcolor] of patch-left-and-ahead 90 1 != grey
+      [
+        set lijevo 1 
+        if [pcolor] of patch-left-and-ahead 90 2 != grey 
+        [
+          set lijevo 2
+        ]
+      ]
+      [
+        set lijevo 0
+      ]
+      ifelse [pcolor] of patch-right-and-ahead 90 1 != grey
+      [
+        set desno 1 
+        if [pcolor] of patch-right-and-ahead 90 2 != grey 
+        [
+          set desno 2
+        ]
+      ]
+      [
+        set desno 0
+      ]
+      ifelse [pcolor] of patch-ahead -1 != grey
+      [
+        set nazad 1 
+        if [pcolor] of patch-ahead -2 != grey 
+        [
+          set nazad 2
+        ]
+      ]
+      [
+        set nazad 0
+      ]
+      ifelse naprijed > desno and naprijed > lijevo and naprijed > nazad
+      [
+        fd 1
+      ]
+      [
+        ifelse lijevo > desno and lijevo > naprijed and lijevo > nazad
+        [
+          left 90
+           fd 1
+        ]
+        [
+          ifelse desno > lijevo and desno > naprijed and desno > nazad
+          [
+            right 90
+            fd 1
+          ]
+          [
+            ifelse nazad > lijevo and nazad > naprijed and nazad > desno
+            [
+              bk 1
+            ]
+            [
+              ifelse desno = lijevo and lijevo = naprijed and naprijed = nazad
+              [
+                let r random 4 
+                ifelse r = 0 
+                [
+                  fd 1
+                ]
+                [
+                  ifelse r = 1 
+                  [
+                    left 90
+                    fd 1
+                  ]
+                  [
+                    ifelse r = 2
+                    [
+                      right 90
+                      fd 1
+                    ]
+                    [
+                      bk 1
+                    ]
+                  ]
+                ]
+              ]
+              [
+                ifelse desno = lijevo and nazad = naprijed
+                [
+                  let r random 2
+                  ifelse desno > nazad
+                  [
+                    ifelse r = 0 
+                    [
+                      right 90
+                      fd 1
+                    ] 
+                    [
+                      left 90
+                      fd 1
+                    ]
+                  ]
+                  [
+                    ifelse r = 0 
+                    [
+                      fd 1
+                    ] 
+                    [
+                      bk 1
+                    ]
+                  ]
+                ]
+                [
+                  ifelse desno = naprijed and lijevo = nazad 
+                  [
+                    let r random 2
+                    ifelse desno > nazad
+                    [
+                      ifelse r = 0 
+                      [
+                        right 90
+                        fd 1
+                      ] 
+                      [
+                        fd 1
+                      ]
+                    ]
+                    [
+                      ifelse r = 0 
+                      [
+                        left 90
+                        fd 1
+                      ] 
+                      [
+                        bk 1
+                      ]
+                    ]
+                  ]
+                  [
+                    ifelse desno = nazad and lijevo = naprijed
+                    [
+                      let r random 2
+                      ifelse desno > naprijed
+                      [
+                        ifelse r = 0 
+                        [
+                          right 90
+                          fd 1
+                        ] 
+                        [
+                          bk 1
+                        ]
+                      ]
+                      [
+                        ifelse r = 0 
+                        [
+                          left 90
+                          fd 1
+                        ] 
+                        [
+                          fd 1
+                        ]
+                      ]
+                    ]
+                    [
+                      let r random 2
+                      ifelse naprijed = lijevo 
+                      [
+                        ifelse r = 0 
+                        [
+                          fd 1
+                        ] 
+                        [
+                          left 90
+                          fd 1
+                        ]
+                      ]
+                      [
+                        ifelse naprijed = desno 
+                        [
+                          ifelse r = 0 
+                          [
+                            fd 1
+                          ] 
+                          [ 
+                            right 90
+                            fd 1
+                          ]
+                        ]
+                        [
+                          ifelse naprijed = nazad 
+                          [
+                            ifelse r = 0 
+                            [
+                              fd 1
+                            ] 
+                            [ 
+                              bk 1
+                            ]
+                          ]
+                          [
+                            ifelse desno = lijevo 
+                            [
+                              ifelse r = 0 
+                              [
+                                right 90
+                                fd 1
+                              ] 
+                              [
+                                left 90
+                                fd 1
+                              ]
+                            ]
+                            [
+                              ifelse desno = nazad 
+                              [
+                                ifelse r = 0 
+                                [
+                                  right 90
+                                  fd 1
+                                ] 
+                                [
+                                  bk 1
+                                ]
+                              ]
+                              [
+                                ifelse r = 0 
+                                [
+                                  left 90
+                                  fd 1
+                                ] 
+                                [
+                                  bk 1
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  set brr (brr + 1)
+  ]
+  
+end

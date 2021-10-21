@@ -1,0 +1,1360 @@
+;to iterativna_pretraga_po_dubini_c
+;
+;  ask cure
+;  [
+;    if any? [momci] of patch-here
+;    [
+;      set c true
+;    ]
+;  ]
+;
+;  ask cure
+;  [
+;    if any? [momci] of patch-here
+;    [
+;      if not any? [momci] of patch-here
+;      [
+;        die
+;      ]
+;      stop
+;    ]
+;  ]
+;
+;  if not any? cure
+;  [
+;    set dubinac (dubinac + 1)
+;    create-cure 1
+;    [
+;      setxy xc yc
+;      ;set shape "person"
+;      set color red
+;      set heading 0
+;      set dubina-i 0
+;      set c false
+;    ]
+;  ]
+;
+;  ask first (sort-by [[who] of ?1 > [who] of ?2] cure)
+;  [
+;    ask cure
+;    [
+;      if any? [momci] of patch-here
+;      [
+;        set c true
+;      ]
+;    ]
+;    if c = false
+;    [
+;      if [pcolor] of patch-ahead 1 != grey
+;      [
+;        hatch 1
+;        [
+;          set dubina-i (dubina-i + 1)
+;          pen-down
+;          fd 1
+;          set k (k + 1)
+;;          if any? momci with [[pxcor] of patch-here = [pxcor] of patch-here
+;;            and [pycor] of patch-here = [pycor] of patch-here]
+;;          if any? cure with [count [momci] of patch-here >= 1]
+;          ask cure
+;          [
+;            if any? [momci] of patch-here
+;            [
+;              set c true
+;            ]
+;          ]
+;          if dubina-i > dubinac
+;          [
+;            die
+;          ]
+;        ]
+;        set brojc (brojc + 1)
+;      ]
+;
+;
+;      if [pcolor] of patch-left-and-ahead  90 1 != grey
+;      [
+;        hatch 1
+;        [
+;          set dubina-i (dubina-i + 1)
+;          pen-down
+;          lt 90
+;          fd 1
+;          set k (k + 1)
+;          ask cure
+;          [
+;            if any? [momci] of patch-here
+;            [
+;              set c true
+;            ]
+;          ]
+;          if dubina-i > dubinac [die]
+;        ]
+;        set brojc (brojc + 1)
+;      ]
+;
+;
+;      if [pcolor] of patch-right-and-ahead  90 1 != grey
+;      [
+;        hatch 1
+;        [
+;          set dubina-i (dubina-i + 1)
+;          pen-down
+;          rt 90
+;          fd 1
+;          set k (k + 1)
+;          ask cure
+;          [
+;            if any? [momci] of patch-here
+;            [
+;              set c true
+;            ]
+;          ]
+;          if dubina-i > dubinac [die]
+;        ]
+;        set brojc (brojc + 1)
+;      ]
+;
+;;      if [pcolor] of patch-ahead  -1 != grey
+;;      [
+;;        hatch 1
+;;        [
+;;          set dubina-i (dubina-i + 1)
+;;          pen-down
+;;          rt 180
+;;          fd 1
+;;          set k (k + 1)
+;;          if any? cure with [[pxcor] of patch-here = xm and [pycor] of patch-here = ym]
+;;          [
+;;            set c true
+;;          ]
+;;          if dubina-i > dubinac [die]
+;;        ]
+;;        set brojc (brojc + 1)
+;;      ]
+;    ]
+;
+;    if [c] of cure != true [die]
+;
+;  ]
+;
+;end
+
+to iterativna_pretraga_po_dubini_m
+
+  if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+  [
+    ask momci with [[pxcor] of patch-here != xc or [pycor] of patch-here != yc]
+    [
+      die
+    ]
+    ifelse any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+    [
+      set cilj "Da"
+      set en true
+      user-message "Pronasli ste ljubav svog zivota!"
+    ]
+    [
+      set en true
+      user-message "Niste pronasli ljubav svog zivota!"
+    ]
+    stop
+  ]
+
+  if not any? momci
+  [
+    set dubinam (dubinam + 1)
+    create-momci 1
+    [
+      setxy xm ym
+      set shape "person"
+      set color blue
+      set heading 0
+      set dubina-i 0
+      set c false
+      set ukupno (ukupno + 1)
+    ]
+  ]
+
+  ask first (sort-by [[who] of ?1 > [who] of ?2] momci)
+  [
+    if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+    [
+      set c true
+    ]
+    if c = false
+    [
+      if [pcolor] of patch-ahead 1 != grey
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          set dubina-i (dubina-i + 1)
+          pen-down
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          fd 1
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+          if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+          [
+            set c true
+          ]
+          if dubina-i > dubinam
+          [
+            die
+          ]
+        ]
+        set brojm (brojm + 1)
+      ]
+
+
+      if [pcolor] of patch-left-and-ahead  90 1 != grey
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          set dubina-i (dubina-i + 1)
+          pen-down
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          lt 90
+          fd 1
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+          if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+          [
+            set c true
+          ]
+          if dubina-i > dubinam [die]
+        ]
+        set brojm (brojm + 1)
+      ]
+
+
+      if [pcolor] of patch-right-and-ahead  90 1 != grey
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          set dubina-i (dubina-i + 1)
+          pen-down
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          rt 90
+          fd 1
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+          if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+          [
+            set c true
+          ]
+          if dubina-i > dubinam [die]
+        ]
+        set brojm (brojm + 1)
+      ]
+
+;      if [pcolor] of patch-ahead  -1 != grey
+;      [
+;        hatch 1
+;        [
+;          set dubina-i (dubina-i + 1)
+;          pen-down
+;          rt 180
+;          fd 1
+;          set k (k + 1)
+;          if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+;          [
+;            set c true
+;          ]
+;          if dubina-i > dubinam [die]
+;        ]
+;        set brojm (brojm + 1)
+;      ]
+    ]
+
+    if [c] of momci != true [die]
+
+  ]
+
+end
+
+to algoritam_jednolikog_troska
+
+  if zivoti_cure > 0
+  [
+    ask item 0 sort-on [h] momci
+    [
+      if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+      [
+        ask momci with [[pxcor] of patch-here != xc or [pycor] of patch-here != yc]
+        [
+          die
+        ]
+        ifelse any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+        [
+      set cilj "Da"
+      set en true
+          user-message "Pronasli ste ljubav svog zivota!"
+        ]
+        [
+          set en true
+          user-message "Niste pronasli ljubav svog zivota!"
+        ]
+        stop
+      ]
+
+      if [pcolor != grey] of patch-left-and-ahead 90 1
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          lt 90 fd 1 
+          ask patch-here
+          [
+            set posjecen 1
+          ] 
+          set k (k + 1) set h h + 1
+          ask momci
+          [
+            set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+          ]
+        ]
+        set brojm (brojm + 1)
+        if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+        [
+          set c true
+        ]
+      ]
+
+      if [pcolor != grey] of patch-ahead 1
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          fd 1
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set h h + 1
+          ask momci
+          [
+            set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+          ]
+        ]
+        set brojm (brojm + 1)
+        if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+        [
+          set c true
+        ]
+      ]
+
+      if [pcolor != grey] of patch-right-and-ahead 90 1
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          rt 90 fd 1 
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set h h + 1
+          ask momci
+          [
+            set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+          ]
+        ]
+        set brojm (brojm + 1)
+        if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+        [
+          set c true
+        ]
+      ]
+      die
+    ]
+  ]
+  if zivoti_cure = 0
+  [
+    set en true
+    user-message "Niste pronasli ljubav svog zivota!"
+  ]
+
+end
+
+to pretraga_po_dubini
+
+  if zivoti_cure > 0
+  [
+    ask last sort-on [who] momci
+    [
+      if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+      [
+        ask momci with [[pxcor] of patch-here != xc or [pycor] of patch-here != yc]
+        [
+          die
+        ]
+        ifelse any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+        [
+      set cilj "Da"
+      set en true
+          user-message "Pronasli ste ljubav svog zivota!"
+        ]
+        [
+          set en true
+          user-message "Niste pronasli ljubav svog zivota!"
+        ]
+        stop
+      ]
+
+      if [pcolor != grey] of patch-left-and-ahead 90 1
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          lt 90 fd 1 
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set h h + 1
+          ask momci
+          [
+            set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+          ]
+        ]
+        set brojm (brojm + 1)
+        if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+        [
+          set c true
+        ]
+      ]
+
+      if [pcolor != grey] of patch-ahead 1
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          fd 1 
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set h h + 1
+          ask momci
+          [
+            set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+          ]
+        ]
+        set brojm (brojm + 1)
+        if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+        [
+          set c true
+        ]
+      ]
+
+      if [pcolor != grey] of patch-right-and-ahead 90 1
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          rt 90 fd 1 
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set h h + 1
+          ask momci
+          [
+            set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+          ]
+        ]
+        set brojm (brojm + 1)
+        if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+        [
+          set c true
+        ]
+      ]
+      die
+    ]
+  ]
+  if zivoti_cure = 0
+  [
+    set en true
+    user-message "Niste pronasli ljubav svog zivota!"
+  ]
+
+end
+
+to pohlepni_algoritam
+
+  ask momci
+  [
+    set xm [pxcor] of patch-here
+    set ym [pycor] of patch-here
+    if [pxcor] of patch-here = xc and [pycor] of patch-here = yc
+    [
+      stop
+    ]
+  ]
+
+  if xm = xc and ym = yc or zivoti_cure <= 0
+    [
+      ifelse xm = xc and ym = yc
+      [
+      set cilj "Da"
+      set en true
+      user-message "Pronasli ste ljubav svog zivota!"
+      ]
+      [
+        set en true
+        user-message "Niste pronasli ljubav svog zivota!"
+      ]
+      stop
+    ]
+
+  ask momak 1
+  [
+    ifelse ([u] of patch-ahead 1 < [u] of patch-left-and-ahead 90 1 and [u] of patch-ahead 1 < [u] of patch-right-and-ahead 90 1)
+    [
+      fd 1 
+      ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+    ]
+    [
+      ifelse ([u] of patch-left-and-ahead 90 1 < [u] of patch-ahead 1 and [u] of patch-left-and-ahead 90 1 < [u] of patch-right-and-ahead 90 1)
+      [
+        lt 90 fd 1 
+        ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+      ]
+      [
+        ifelse ([u] of patch-right-and-ahead 90 1 < [u] of patch-left-and-ahead 90 1 and [u] of patch-right-and-ahead 90 1 < [u] of patch-ahead 1)
+        [
+          rt 90 fd 1 
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+        ]
+        [
+          ifelse [u] of patch-ahead 1 = [u] of patch-left-and-ahead 90 1 and [u] of patch-ahead 1 != [u] of patch-right-and-ahead 90 1
+            [
+              ifelse random 2 = 0
+              [
+                fd 1 
+                ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+              ]
+              [
+                lt 90 fd 1 
+                ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+              ]
+            ]
+            [
+              ifelse [u] of patch-ahead 1 = [u] of patch-right-and-ahead 90 1 and [u] of patch-ahead 1 != [u] of patch-left-and-ahead 90 1
+              [
+                ifelse random 2 = 0
+                [
+                  fd 1 
+                  ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+                ]
+                [
+                  rt 90 fd 1 
+                  ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+                ]
+              ]
+              [
+                ifelse [u] of patch-left-and-ahead 90 1 = [u] of patch-right-and-ahead 90 1 and [u] of patch-ahead 1 != [u] of patch-right-and-ahead 90 1
+                [
+                  ifelse random 2 = 0
+                  [
+                    rt 90 fd 1 
+                    ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+                  ]
+                  [
+                    lt 90 fd 1 
+                    ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+                  ]
+                ]
+                [
+                  let r random 3
+                  ifelse r = 0
+                  [
+                    fd 1 
+                    ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+                  ]
+                  [
+                    ifelse r = 1
+                    [
+                      lt 90 fd 1 
+                      ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+                    ]
+                    [
+                      rt 90 fd 1 
+                      ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+                    ]
+                  ]
+                ]
+              ]
+            ]
+        ]
+      ]
+    ]
+  ]
+
+  ask momci
+  [
+    set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+  ]
+
+end
+
+to pretraga_po_sirini
+
+  ask momci
+  [
+    if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+    [
+      ask momci with [[pxcor] of patch-here != xc or [pycor] of patch-here != yc]
+      [
+        die
+      ]
+      ifelse any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+      [
+                set cilj "Da"
+                set en true
+        user-message "Pronasli ste ljubav svog zivota!"
+      ]
+      [
+        set en true
+        user-message "Niste pronasli ljubav svog zivota!"
+      ]
+      stop
+    ]
+
+    if [pcolor != grey] of patch-left-and-ahead 90 1
+    [
+      hatch 1
+      [
+        set ukupno (ukupno + 1)
+        lt 90 fd 1 
+        ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set h h + 1
+        ask momci
+        [
+          set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+        ]
+      ]
+      set brojm (brojm + 1)
+      if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+      [
+        set c true
+      ]
+    ]
+
+    if [pcolor != grey] of patch-ahead 1
+    [
+      hatch 1
+      [
+        set ukupno (ukupno + 1)
+        fd 1 
+        ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set h h + 1
+        ask momci
+        [
+          set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+        ]
+      ]
+      set brojm (brojm + 1)
+      if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+      [
+        set c true
+      ]
+    ]
+
+    if [pcolor != grey] of patch-right-and-ahead 90 1
+    [
+      hatch 1
+      [
+        set ukupno (ukupno + 1)
+        rt 90 fd 1 
+        ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set h h + 1
+        ask momci
+        [
+          set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+        ]
+      ]
+      set brojm (brojm + 1)
+      if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+      [
+        set c true
+      ]
+    ]
+    die
+  ]
+  if zivoti_cure <= 0
+    [
+      set en true
+      user-message "Niste pronasli ljubav svog zivota!"
+    ]
+
+end
+
+to a*_algoritam
+
+  if zivoti_cure > 0
+  [
+    ask momci
+    [
+      set a h + p
+    ]
+    ask first sort-on [a] momci
+    [
+      if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+      [
+        ask momci with [[pxcor] of patch-here != xc or [pycor] of patch-here != yc]
+        [
+          die
+        ]
+        ifelse any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+        [
+                  set cilj "Da"
+                  set en true
+          user-message "Pronasli ste ljubav svog zivota!"
+        ]
+        [
+          set en true
+          user-message "Niste pronasli ljubav svog zivota!"
+        ]
+        stop
+      ]
+
+      if [pcolor != grey] of patch-left-and-ahead 90 1
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          lt 90 fd 1 
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set h h + 1
+          ask momci
+          [
+            set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+          ]
+        ]
+        set brojm (brojm + 1)
+        if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+        [
+          set c true
+        ]
+      ]
+
+      if [pcolor != grey] of patch-ahead 1
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          fd 1 
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set h h + 1
+          ask momci
+          [
+            set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+          ]
+        ]
+        set brojm (brojm + 1)
+        if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+        [
+          set c true
+        ]
+      ]
+
+      if [pcolor != grey] of patch-right-and-ahead 90 1
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          rt 90 fd 1 
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set h h + 1
+          ask momci
+          [
+            set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+          ]
+        ]
+        set brojm (brojm + 1)
+        if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+        [
+          set c true
+        ]
+      ]
+      die
+    ]
+  ]
+  if zivoti_cure = 0
+  [
+    set en true
+    user-message "Niste pronasli ljubav svog zivota!"
+  ]
+
+end
+
+to ogranicena_pretraga_po_dubini
+
+  if any? momci
+  [
+    ask first reverse sort-on [who] momci
+    [
+      if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+      [
+        ask momci with [[pxcor] of patch-here != xc or [pycor] of patch-here != yc]
+        [
+          die
+        ]
+        ifelse any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+        [
+                  set cilj "Da"
+                  set en true
+          user-message "Pronasli ste ljubav svog zivota!"
+        ]
+        [
+          set en true
+          user-message "Niste pronasli ljubav svog zivota!"
+        ]
+        stop
+      ]
+
+      if [pcolor] of patch-ahead 1 != grey
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          fd 1 
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set d-o d-o + 1 if d-o > granica
+          [
+            die
+          ]
+        ]
+        set brojm (brojm + 1)]
+      if [pcolor] of patch-left-and-ahead 90 1 != grey
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          lt 90 fd 1 
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set d-o d-o + 1 if d-o > granica
+          [
+            die
+          ]
+        ]
+        set brojm (brojm + 1)
+      ]
+      if [pcolor] of patch-right-and-ahead 90 1 != grey
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          rt 90 fd 1 
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set d-o d-o + 1 if d-o > granica
+          [
+            die
+          ]
+        ]
+        set brojm (brojm + 1)
+      ]
+      die
+    ]
+  ]
+
+  ifelse any? momci with [d-o != granica] = true
+  [
+    set kraj false
+  ]
+  [
+    set kraj true
+  ]
+
+  if kraj = true
+  [
+    set en true
+    user-message "Niste pronasli ljubav svog zivota!"
+  ]
+
+
+  if zivoti_cure <= 0
+    [
+      set en true
+      user-message "Niste pronasli ljubav svog zivota!"
+    ]
+
+end
+
+to algoritam_valne_fronte
+
+  if zivoti_cure > 0
+  [
+  ask first sort-on [p] momci
+  [
+    if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+    [
+      ask momci with [[pxcor] of patch-here != xc or [pycor] of patch-here != yc]
+      [
+        die
+      ]
+      ifelse any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+      [
+                set cilj "Da"
+                set en true
+        user-message "Pronasli ste ljubav svog zivota!"
+      ]
+      [
+        set en true
+        user-message "Niste pronasli ljubav svog zivota!"
+      ]
+      stop
+    ]
+
+    if [pcolor != grey] of patch-left-and-ahead 90 1
+    [
+      hatch 1
+      [
+        set ukupno (ukupno + 1)
+        lt 90 fd 1 
+        ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set h h + 1
+        ask momci
+        [
+          set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+        ]
+      ]
+      set brojm (brojm + 1)
+      if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+      [
+        set c true
+      ]
+    ]
+
+    if [pcolor != grey] of patch-ahead 1
+    [
+      hatch 1
+      [
+        set ukupno (ukupno + 1)
+        fd 1 
+        ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set h h + 1
+        ask momci
+        [
+          set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+        ]
+      ]
+      set brojm (brojm + 1)
+      if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+      [
+        set c true
+      ]
+    ]
+
+    if [pcolor != grey] of patch-right-and-ahead 90 1
+    [
+      hatch 1
+      [
+        set ukupno (ukupno + 1)
+        rt 90 fd 1 
+        ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1) set h h + 1
+        ask momci
+        [
+          set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+        ]
+      ]
+      set brojm (brojm + 1)
+      if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+      [
+        set c true
+      ]
+    ]
+    die
+  ]
+  ]
+  if zivoti_cure = 0
+  [
+    set en true
+    user-message "Niste pronasli ljubav svog zivota!"
+  ]
+
+end
+
+to tabu_algoritam
+
+  if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc] or zivoti_cure <= 0
+  [
+    ask momci with [[pxcor] of patch-here != xc or [pycor] of patch-here != yc]
+    [
+      die
+    ]
+    ifelse any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+    [
+      set cilj "Da"
+      set en true
+      user-message "Pronasli ste ljubav svog zivota!"
+    ]
+    [
+      set en true
+      user-message "Niste pronasli ljubav svog zivota!"
+    ]
+    stop
+  ]
+
+  ask first (sort-by [[t] of ?1 > [t] of ?2] momci)
+  [
+    if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+    [
+      set c true
+    ]
+    if c = false
+    [
+      if [pcolor] of patch-ahead 1 != grey
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          pen-down
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          fd 1
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+          if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+          [
+            set c true
+          ]
+        ]
+        set brojm (brojm + 1)
+      ]
+
+      if [pcolor] of patch-left-and-ahead  90 1 != grey
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          pen-down
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          lt 90
+          fd 1
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+          if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+          [
+            set c true
+          ]
+        ]
+        set brojm (brojm + 1)
+      ]
+
+      if [pcolor] of patch-right-and-ahead  90 1 != grey
+      [
+        hatch 1
+        [
+          set ukupno (ukupno + 1)
+          pen-down
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          rt 90
+          fd 1
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+          if any? momci with [[pxcor] of patch-here = xc and [pycor] of patch-here = yc]
+          [
+            set c true
+          ]
+        ]
+        set brojm (brojm + 1)
+      ]
+    ]
+
+    if [c] of momci != true [die]
+
+  ]
+
+end
+
+to algoritam_stohastickog_penjanja_uzbrdo
+
+  ask momci
+  [
+    set xm [pxcor] of patch-here
+    set ym [pycor] of patch-here
+    if [pxcor] of patch-here = xc and [pycor] of patch-here = yc
+    [
+      stop
+    ]
+  ]
+
+  if xm = xc and ym = yc or zivoti_cure <= 0
+    [
+      ifelse xm = xc and ym = yc
+      [
+      set cilj "Da"
+      set en true
+      user-message "Pronasli ste ljubav svog zivota!"
+      ]
+      [
+        set en true
+        user-message "Niste pronasli ljubav svog zivota!"
+      ]
+      stop
+    ]
+
+  ask momak 1
+  [
+    ifelse ([u] of patch-here > [u] of patch-ahead 1 and [u] of patch-here < [u] of patch-right-and-ahead 90 1 and [u] of patch-here < [u] of patch-left-and-ahead 90 1)
+    [
+      fd 1 
+      ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+    ]
+    [
+      ifelse ([u] of patch-here < [u] of patch-ahead 1 and [u] of patch-here < [u] of patch-right-and-ahead 90 1 and [u] of patch-here > [u] of patch-left-and-ahead 90 1)
+      [
+        lt 90 fd 1 
+        ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+      ]
+      [
+        ifelse ([u] of patch-here < [u] of patch-ahead 1 and [u] of patch-here > [u] of patch-right-and-ahead 90 1 and [u] of patch-here < [u] of patch-left-and-ahead 90 1)
+        [
+          rt 90 fd 1 
+          ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+        ]
+        [
+          ifelse ([u] of patch-here > [u] of patch-ahead 1 and [u] of patch-here < [u] of patch-right-and-ahead 90 1 and [u] of patch-here > [u] of patch-left-and-ahead 90 1)
+            [
+              ifelse random 2 = 0
+              [
+                fd 1 
+                ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+              ]
+              [
+                lt 90 fd 1 
+                ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+              ]
+            ]
+            [
+              ifelse ([u] of patch-here > [u] of patch-ahead 1 and [u] of patch-here > [u] of patch-right-and-ahead 90 1 and [u] of patch-here < [u] of patch-left-and-ahead 90 1)
+              [
+                ifelse random 2 = 0
+                [
+                  fd 1 
+                  ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+                ]
+                [
+                  rt 90 fd 1 
+                  ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+                ]
+              ]
+              [
+                ifelse ([u] of patch-here < [u] of patch-ahead 1 and [u] of patch-here > [u] of patch-right-and-ahead 90 1 and [u] of patch-here > [u] of patch-left-and-ahead 90 1)
+                [
+                  ifelse random 2 = 0
+                  [
+                    rt 90 fd 1 
+                    ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+                  ]
+                  [
+                    lt 90 fd 1 
+                    ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+                  ]
+                ]
+                [
+                  let r random 3
+                  ifelse r = 0
+                  [
+                    fd 1 
+                    ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+                  ]
+                  [
+                    ifelse r = 1
+                    [
+                      lt 90 fd 1 
+                      ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+                    ]
+                    [
+                      rt 90 fd 1 
+                      ask patch-here
+          [
+            set posjecen 1
+          ]
+          set k (k + 1)
+                    ]
+                  ]
+                ]
+              ]
+            ]
+        ]
+      ]
+    ]
+  ]
+
+  ask momci
+  [
+    set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc]))
+  ]
+
+end

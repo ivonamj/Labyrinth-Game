@@ -1,0 +1,239 @@
+to crtaj-zidove
+  
+  set i 0
+  set j 0
+  let filename (word "labirinti/maze_005_000_" Odaberite_mjesto ".lab")
+  file-open filename
+  while [not file-at-end?]
+  [
+    set var file-read-line
+    ifelse item 0 var = "1"
+    [
+      while [i != 19]
+      [
+        if item i var = "1"
+        [
+          ask patches with [pxcor = i and pycor = j - 2]
+          [
+            set pcolor grey
+          ]
+        ]
+        set i (i + 1)
+      ]
+      set i 0
+      set j (j + 1)
+    ]
+    [
+      set j (j + 1)
+    ]
+  ]
+  file-close
+  
+end
+
+to crtaj_curu
+  
+  set xc random 19
+  set yc random 19
+  set brm random 10
+  while[brm < 5]
+  [
+    set brm random 10
+  ]
+  set brm1 brm
+  create-cure 1
+  [
+    while 
+    [
+      [pcolor] of patch-at xc yc != black
+    ]
+    [
+      set xc random 19
+      set yc random 19
+    ]
+    setxy xc yc
+    set shape "person"
+    set color red
+    set heading 0
+    set zivoti_cure 3
+;    set dubina-i 0
+;    set k 0
+;    set c false
+  ]
+;  set brojc 1
+  
+end
+
+to crtaj_momka
+  
+  set xm random 19
+  set ym random 19
+  create-momci 1
+  [
+    while 
+    [
+      [pcolor] of patch-at xm ym != black or
+        not any? cure-on patch-at xm ym = false or 
+        [pcolor] of patch-at xm (ym - 1) = black
+    ]
+    [
+      set xm random 19
+      set ym random 19
+    ]
+    setxy xm ym
+    set shape "person"
+    set color blue
+    set heading 0
+    pen-down
+    ask patch-here
+      [
+        set posjecen 1
+      ]
+;    set zivoti_momka brz1
+    set u 254 
+    set p 0 
+    set mp []
+    set k 0
+    set c false
+    set dubina-i 0
+    set d-o 0
+    set ukupno (ukupno + 1)
+  ]
+  set brojm 1
+  
+end
+
+;to crtaj_zenske_osobe
+;  
+;  let x random 19
+;  let y random 19
+;  set brz random 6
+;  while[brz < 3]
+;  [
+;    set brz random 6
+;  ]
+;  set brz1 brz
+;  let br0 0
+;  while[brz != br0]
+;  [
+;    create-zenske_osobe 1
+;    [
+;      while 
+;      [
+;        [pcolor] of patch-at x y != black or
+;        not any? cure-on patch-at x y = false or
+;        not any? momci-on patch-at x y = false or
+;        not any? zenske_osobe-on patch-at x y = false
+;      ]
+;      [
+;        set x random 19
+;        set y random 19
+;      ]
+;      setxy x y
+;      set shape "person"
+;      set color yellow
+;      set heading 0
+;    ]
+;    set brz (brz - 1)
+;  ]
+;  
+;end
+
+to crtaj_muske_osobe
+  
+  let x random 19
+  let y random 19
+  let br0 0
+  while[brm != br0]
+  [
+    create-muske_osobe 1
+    [
+      while 
+      [
+        [pcolor] of patch-at x y != black or 
+        not any? cure-on patch-at x y = false or
+        not any? momci-on patch-at x y = false or
+        not any? muske_osobe-on patch-at x y = false
+      ]
+      [
+        set x random 19
+        set y random 19
+      ]
+      setxy x y
+      set shape "person"
+      set color green
+      set heading 0
+    ]
+    set brm (brm - 1)
+  ]
+  
+end
+
+to crtaj
+  
+  crtaj_curu
+  crtaj_momka
+  ask patches with [pxcor = xc and pycor = yc]
+  [
+    set u 1 
+  ] 
+  ask patches with [pcolor = grey]
+  [
+    set u 255
+  ] 
+  while 
+  [
+    any? patches with [u = 0]
+  ]
+  [
+    ask patches with [u = d]
+    [
+      ask neighbors4 with [u = 0]
+      [
+        set u d + 1
+      ]
+    ]
+    set d d + 1
+  ]
+  ask patches 
+  [
+    set plabel u set plabel-color blue
+  ]
+  ask momci 
+  [
+    set p  (abs (pxcor - (first [pxcor] of patches with [pxcor = xc and pycor = yc])) + abs( pycor - first [pycor] of patches with [pxcor = xc and pycor = yc])) 
+  ]
+;  crtaj_zenske_osobe
+  crtaj_muske_osobe
+  
+end
+  
+to setup
+  
+  ca
+  crtaj-zidove
+  ask patches 
+  [
+    set u 0
+  ]
+  set d 1
+  crtaj
+  ask momci
+  [
+    set h 0
+    set a 0
+    set mp fput ([plabel] of patch-here) mp
+  ]
+  ;  set dubinac 1
+  set dubinam 1
+  ask patches
+  [
+    set plabel-color pcolor
+  ]
+  set kraj false
+  set cilj "Ne"
+  set maks 1
+  set maksi 1
+  set duljina count patches with[posjecen = 1]
+  
+end
